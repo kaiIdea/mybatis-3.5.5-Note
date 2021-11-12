@@ -18,6 +18,13 @@ package org.apache.ibatis.reflection.property;
 import java.util.Iterator;
 
 /**
+ *
+ *   属性标记器，如 传入 student[sid].name 的字符串后进行解析
+ *   解析后的格式如下：
+ *   private String name; //student
+ *   private final String indexedName; //[sid]
+ *   private String index;  //sid
+ *   private final String children;  //name
  * @author Clinton Begin
  */
 public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
