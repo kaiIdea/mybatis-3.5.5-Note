@@ -18,6 +18,8 @@ package org.apache.ibatis.reflection.invoker;
 import java.lang.reflect.InvocationTargetException;
 
 /**
+ * 执行器接口，根据不同的实现类，执行同的业务
+ * 具体实现类：MethodInvoker GetFieldInvoker SetFieldInvoker
  * @author Clinton Begin
  */
 public interface Invoker {
