@@ -20,9 +20,10 @@ import java.lang.reflect.Field;
 import org.apache.ibatis.reflection.Reflector;
 
 /**
+ * Copier:复印. 对象属性值copy,但是要注意，这里的操作是浅拷贝，对于引用类型，copy的是对象引用地址。可能会存在不同对象的相同成员类，
+ * 指向同一个对象。
  * @author Clinton Begin
- * @Description: 对象属性值copy,Copier（复印）. 但是要注意，这里的操作是浅拷贝，对于引用类型，copy的是对象引用地址。可能会存在不同对象的相同成员类，
- *               指向同一个对象。
+ *
  */
 public final class PropertyCopier {
 
