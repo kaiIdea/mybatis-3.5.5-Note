@@ -21,7 +21,12 @@ import java.lang.reflect.Method;
 
 import org.apache.ibatis.reflection.ReflectionException;
 
+
+/**
+ *  调用异常时，可以初始化此类，
+ */
 public class AmbiguousMethodInvoker extends MethodInvoker {
+  //异常原因字段
   private final String exceptionMessage;
 
   public AmbiguousMethodInvoker(Method method, String exceptionMessage) {

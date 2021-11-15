@@ -18,6 +18,7 @@ package org.apache.ibatis.reflection.invoker;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.apache.ibatis.modle.User;
 import org.apache.ibatis.reflection.Reflector;
 
 /**
@@ -28,9 +29,11 @@ public class MethodInvoker implements Invoker {
   private final Class<?> type;
   private final Method method;
 
+
+  //初始化方法执行器，传入方法对象
   public MethodInvoker(Method method) {
     this.method = method;
-
+    //如果方法参数列表大小== 1时，type=参数类型，否则type=方法返回类型
     if (method.getParameterTypes().length == 1) {
       type = method.getParameterTypes()[0];
     } else {
@@ -38,6 +41,14 @@ public class MethodInvoker implements Invoker {
     }
   }
 
+  /**
+   * 方法调用，
+   * @param target 目标对象/调用方法的对象
+   * @param args 调用参数
+   * @return
+   * @throws IllegalAccessException
+   * @throws InvocationTargetException
+   */
   @Override
   public Object invoke(Object target, Object[] args) throws IllegalAccessException, InvocationTargetException {
     try {
@@ -52,8 +63,23 @@ public class MethodInvoker implements Invoker {
     }
   }
 
+  /**
+   * 获取类型，如果方法参数列表大小== 1时，type=参数类型，否则type=方法返回类型
+   * @return
+   */
   @Override
   public Class<?> getType() {
     return type;
+  }
+
+
+  public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    Method method = User.class.getMethod("getUser", new Class[]{String.class});
+    Invoker invoker = new MethodInvoker(method);
+
+    Object a = invoker.invoke(new User(),new Object[]{"1111"});
+
+    Class clazz = invoker.getType();
+    System.out.println(clazz);
   }
 }

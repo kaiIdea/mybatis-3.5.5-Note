@@ -20,4 +20,8 @@ public class User {
     this.userName = userName;
     this.student = student;
   }
+
+  public void getUser(String userName){
+    System.out.println("User:id="+id+",name="+userName);
+  }
 }

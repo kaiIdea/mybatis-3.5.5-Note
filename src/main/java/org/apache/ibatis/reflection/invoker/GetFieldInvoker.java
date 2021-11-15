@@ -16,19 +16,33 @@
 package org.apache.ibatis.reflection.invoker;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 
+import org.apache.ibatis.modle.User;
 import org.apache.ibatis.reflection.Reflector;
 
 /**
+ *  获取对象属性值
  * @author Clinton Begin
  */
 public class GetFieldInvoker implements Invoker {
   private final Field field;
 
+  /**
+   * 初始化传入Field对象
+   * @param field
+   */
   public GetFieldInvoker(Field field) {
     this.field = field;
   }
 
+  /**
+   * 调用方法，获取属性值
+   * @param target
+   * @param args
+   * @return
+   * @throws IllegalAccessException
+   */
   @Override
   public Object invoke(Object target, Object[] args) throws IllegalAccessException {
     try {
@@ -43,8 +57,23 @@ public class GetFieldInvoker implements Invoker {
     }
   }
 
+  /**
+   * 获取属性类型
+   * @return
+   */
   @Override
   public Class<?> getType() {
     return field.getType();
+  }
+
+  public static void main(String[] args) throws NoSuchFieldException, InvocationTargetException, IllegalAccessException {
+    User user = new User();
+    Invoker invoker = new GetFieldInvoker(User.class.getDeclaredField("userName"));
+
+    Object a = invoker.invoke(user,null);
+
+    System.out.println(invoker.getType());
+
+
   }
 }
