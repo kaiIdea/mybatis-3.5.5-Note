@@ -34,6 +34,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.ibatis.modle.User;
 import org.apache.ibatis.reflection.invoker.AmbiguousMethodInvoker;
 import org.apache.ibatis.reflection.invoker.GetFieldInvoker;
 import org.apache.ibatis.reflection.invoker.Invoker;
@@ -49,19 +50,28 @@ import org.apache.ibatis.reflection.property.PropertyNamer;
  */
 public class Reflector {
 
+  //要被反射解析的类
   private final Class<?> type;
+  //可以读的属性名称
   private final String[] readablePropertyNames;
+  //可以写的属性名称
   private final String[] writablePropertyNames;
+  //set方法映射表，key值为属性名称，value值为对应的set方法
   private final Map<String, Invoker> setMethods = new HashMap<>();
+  //get方法映射表，key值为属性名称，value值为对应的get方法
   private final Map<String, Invoker> getMethods = new HashMap<>();
+  //set方法输入类型表，key值为属性名称，value为调用属性对应的set方法时的参数类型
   private final Map<String, Class<?>> setTypes = new HashMap<>();
+  //get方法输入类型表，key值为属性名称，value为调用属性对应的get方法时的返回类型
   private final Map<String, Class<?>> getTypes = new HashMap<>();
+  //默认构造方法
   private Constructor<?> defaultConstructor;
-
+  //大小写无关的属性映射表，key为属性名称大写，value为属性名称
   private Map<String, String> caseInsensitivePropertyMap = new HashMap<>();
 
   public Reflector(Class<?> clazz) {
     type = clazz;
+    //获取类默认的构造函数
     addDefaultConstructor(clazz);
     addGetMethods(clazz);
     addSetMethods(clazz);
@@ -141,10 +151,23 @@ public class Reflector {
     resolveSetterConflicts(conflictingSetters);
   }
 
+  /**
+   *
+   * @param conflictingMethods
+   * @param name  属性名称
+   * @param method
+   */
   private void addMethodConflict(Map<String, List<Method>> conflictingMethods, String name, Method method) {
     if (isValidPropertyName(name)) {
+      //获取属性名，对应的方法列表，写法等同于下面
       List<Method> list = conflictingMethods.computeIfAbsent(name, k -> new ArrayList<>());
       list.add(method);
+
+//      List<Method> list = conflictingMethods.get(name);
+//      if(null == list){
+//        list = new ArrayList<>();
+//        list.add(method);
+//      }
     }
   }
 
@@ -360,6 +383,11 @@ public class Reflector {
     return defaultConstructor != null;
   }
 
+  /**
+   * 根据属性名称，获取属性对应的set方法对象。
+   * @param propertyName 属性名称
+   * @return
+   */
   public Invoker getSetInvoker(String propertyName) {
     Invoker method = setMethods.get(propertyName);
     if (method == null) {
@@ -368,6 +396,11 @@ public class Reflector {
     return method;
   }
 
+  /**
+   *  根据属性名称，获取属性对应的get方法对象。
+   * @param propertyName 属性名称
+   * @return
+   */
   public Invoker getGetInvoker(String propertyName) {
     Invoker method = getMethods.get(propertyName);
     if (method == null) {
@@ -377,6 +410,8 @@ public class Reflector {
   }
 
   /**
+   *
+   * 根据属性名称，获取调用属性对应Set方法需传入的参数类型
    * Gets the type for a property setter.
    *
    * @param propertyName - the name of the property
@@ -391,6 +426,7 @@ public class Reflector {
   }
 
   /**
+   * 根据属性名称，获取调用属性对应get方法返回类型
    * Gets the type for a property getter.
    *
    * @param propertyName - the name of the property
@@ -405,6 +441,7 @@ public class Reflector {
   }
 
   /**
+   * 获取对象的可读属性数组
    * Gets an array of the readable properties for an object.
    *
    * @return The array
@@ -414,6 +451,8 @@ public class Reflector {
   }
 
   /**
+   *
+   * 获取对象的可写属性数组
    * Gets an array of the writable properties for an object.
    *
    * @return The array
@@ -423,6 +462,7 @@ public class Reflector {
   }
 
   /**
+   * 根据属性名称，查看这个属性是否存在对应的Set方法
    * Check to see if a class has a writable property by name.
    *
    * @param propertyName - the name of the property to check
@@ -433,6 +473,7 @@ public class Reflector {
   }
 
   /**
+   * 根据属性名称，查看这个属性是否存在对应的get方法
    * Check to see if a class has a readable property by name.
    *
    * @param propertyName - the name of the property to check
@@ -442,7 +483,39 @@ public class Reflector {
     return getMethods.containsKey(propertyName);
   }
 
+  /**
+   * 获取属性名称/查找
+   * @param name
+   * @return
+   */
   public String findPropertyName(String name) {
     return caseInsensitivePropertyMap.get(name.toUpperCase(Locale.ENGLISH));
   }
+
+  public static void main(String[] args) {
+    Reflector reflector = new Reflector(User.class);
+    System.out.println();
+  }
+
+
+//  private static Class<?> typeToClass1(Type src) {
+//    Class<?> result = null;
+//    if (src instanceof Class) {
+//      result = (Class<?>) src;
+//    } else if (src instanceof ParameterizedType) {
+//      result = (Class<?>) ((ParameterizedType) src).getRawType();
+//    } else if (src instanceof GenericArrayType) {
+//      Type componentType = ((GenericArrayType) src).getGenericComponentType();
+//      if (componentType instanceof Class) {
+//        result = Array.newInstance((Class<?>) componentType, 0).getClass();
+//      } else {
+//        Class<?> componentClass = typeToClass1(componentType);
+//        result = Array.newInstance(componentClass, 0).getClass();
+//      }
+//    }
+//    if (result == null) {
+//      result = Object.class;
+//    }
+//    return result;
+//  }
 }
