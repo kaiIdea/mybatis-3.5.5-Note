@@ -31,11 +31,13 @@ import java.util.Arrays;
 public class TypeParameterResolver {
 
   /**
+   *
+   * 属性泛型的解析
    * Resolve field type.
    *
    * @param field
    *          the field
-   * @param srcType
+   * @param srcType  要被反射解析的类
    *          the src type
    * @return The field type as {@link Type}. If it has type parameters in the declaration,<br>
    *         they will be resolved to the actual runtime {@link Type}s.
@@ -47,6 +49,8 @@ public class TypeParameterResolver {
   }
 
   /**
+   *
+   * 返回值泛型的解析
    * Resolve return type.
    *
    * @param method
@@ -63,6 +67,8 @@ public class TypeParameterResolver {
   }
 
   /**
+   *
+   * 方法输入参数泛型的解析
    * Resolve param types.
    *
    * @param method
