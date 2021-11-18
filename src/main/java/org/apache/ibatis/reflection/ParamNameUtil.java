@@ -15,6 +15,8 @@
  */
 package org.apache.ibatis.reflection;
 
+import org.apache.ibatis.modle.User;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
@@ -38,5 +40,16 @@ public class ParamNameUtil {
 
   private ParamNameUtil() {
     super();
+  }
+
+  public static void main(String[] args) throws NoSuchMethodException {
+    Method method = User.class.getDeclaredMethod("selectUserMessage",new Class[]{String.class});
+
+    List<String> list = ParamNameUtil.getParamNames(method);
+
+    System.out.println();
+
+
+
   }
 }

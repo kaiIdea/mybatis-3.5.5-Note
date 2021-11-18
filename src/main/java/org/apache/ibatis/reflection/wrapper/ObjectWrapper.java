@@ -22,6 +22,7 @@ import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
 
 /**
+ * 获取get set 类型，set值
  * @author Clinton Begin
  */
 public interface ObjectWrapper {

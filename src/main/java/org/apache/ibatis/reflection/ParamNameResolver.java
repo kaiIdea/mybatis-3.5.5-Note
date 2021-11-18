@@ -27,10 +27,15 @@ import java.util.TreeMap;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.binding.MapperMethod.ParamMap;
+import org.apache.ibatis.modle.UserMapper;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
+
+/**
+ *  参数解析器，
+ */
 public class ParamNameResolver {
 
   public static final String GENERIC_NAME_PREFIX = "param";
@@ -54,6 +59,16 @@ public class ParamNameResolver {
 
   private boolean hasParamAnnotation;
 
+
+  /**
+   * 解析Mapper 方法
+   * int selectCount(@Param("id")Integer id,String userName);
+   * 若都带有注解，返回0->id,1->userName
+   * 第二个参数不带注解，0->id,1->arg1
+   * 采用有序map集合存储
+   * @param config
+   * @param method
+   */
   public ParamNameResolver(Configuration config, Method method) {
     this.useActualParamName = config.isUseActualParamName();
     final Class<?>[] paramTypes = method.getParameterTypes();
@@ -168,6 +183,15 @@ public class ParamNameResolver {
       return map;
     }
     return object;
+  }
+
+  public static void main(String[] args) throws NoSuchMethodException {
+    Method method = UserMapper.class.getMethod("selectCount", Integer.class, String.class);
+    System.out.println();
+
+    Configuration configuration = new Configuration();
+    ParamNameResolver resolver = new ParamNameResolver(configuration,method);
+    System.out.println();
   }
 
 }

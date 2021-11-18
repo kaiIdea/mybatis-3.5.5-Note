@@ -21,12 +21,14 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
+import org.apache.ibatis.modle.User;
 import org.apache.ibatis.reflection.invoker.GetFieldInvoker;
 import org.apache.ibatis.reflection.invoker.Invoker;
 import org.apache.ibatis.reflection.invoker.MethodInvoker;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
 
 /**
+ * 元类信息，指定类的定义信息细节
  * @author Clinton Begin
  */
 public class MetaClass {
@@ -189,6 +191,16 @@ public class MetaClass {
 
   public boolean hasDefaultConstructor() {
     return reflector.hasDefaultConstructor();
+  }
+
+  public static void main(String[] args) {
+    MetaClass metaClass = new MetaClass(User.class,new DefaultReflectorFactory());
+    System.out.println();
+
+    MetaClass metaClass1 = metaClass.metaClassForProperty("userName");
+
+    String propertyName = metaClass.findProperty("userName");
+    System.out.println();
   }
 
 }

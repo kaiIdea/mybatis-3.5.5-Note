@@ -43,6 +43,7 @@ import org.apache.ibatis.reflection.invoker.SetFieldInvoker;
 import org.apache.ibatis.reflection.property.PropertyNamer;
 
 /**
+ * 反射核心类 此类表示一组缓存的类定义信息
  * This class represents a cached set of class definition information that
  * allows for easy mapping between property names and getter/setter methods.
  *
@@ -384,7 +385,7 @@ public class Reflector {
   }
 
   /**
-   * 根据属性名称，获取属性对应的set方法对象。
+   * 根据属性名称，获取属性对应的set方法。
    * @param propertyName 属性名称
    * @return
    */
@@ -397,7 +398,7 @@ public class Reflector {
   }
 
   /**
-   *  根据属性名称，获取属性对应的get方法对象。
+   *  根据属性名称，获取属性对应的get方法。
    * @param propertyName 属性名称
    * @return
    */
@@ -411,7 +412,7 @@ public class Reflector {
 
   /**
    *
-   * 根据属性名称，获取调用属性对应Set方法需传入的参数类型
+   * 根据属性名称，获取属性对应Set方法需传入的参数类型
    * Gets the type for a property setter.
    *
    * @param propertyName - the name of the property
@@ -426,7 +427,7 @@ public class Reflector {
   }
 
   /**
-   * 根据属性名称，获取调用属性对应get方法返回类型
+   * 根据属性名称，获取属性对应get方法返回类型
    * Gets the type for a property getter.
    *
    * @param propertyName - the name of the property

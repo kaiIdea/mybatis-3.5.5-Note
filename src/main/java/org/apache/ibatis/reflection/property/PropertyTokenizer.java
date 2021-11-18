@@ -19,12 +19,12 @@ import java.util.Iterator;
 
 /**
  *
- *   属性标记器，如 传入 student[sid].name 的字符串后进行解析
- *   解析后的格式如下：
- *   private String name; //student
- *   private final String indexedName; //[sid]
- *   private String index;  //sid
- *   private final String children;  //name
+ * 属性标记器。传入 student[0].name 的字符串后进行解析
+ * 解析后的格式如下：
+ * private String name; //student
+ * private final String indexedName; //[0]
+ * private String index;  //0,下标有可能为int/String,
+ * private final String children;  //name
  * @author Clinton Begin
  */
 public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
@@ -79,5 +79,11 @@ public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
   @Override
   public void remove() {
     throw new UnsupportedOperationException("Remove is not supported, as it has no meaning in the context of properties.");
+  }
+
+  public static void main(String[] args) {
+    PropertyTokenizer tokenizer = new PropertyTokenizer("student[sid].name");
+    boolean flag = tokenizer.hasNext();
+    System.out.println();
   }
 }
