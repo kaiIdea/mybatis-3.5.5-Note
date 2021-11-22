@@ -61,7 +61,9 @@ public class TypeParameterResolver {
    *         they will be resolved to the actual runtime {@link Type}s.
    */
   public static Type resolveReturnType(Method method, Type srcType) {
+    //获取方法的返回类型
     Type returnType = method.getGenericReturnType();
+    //方法所属的类，
     Class<?> declaringClass = method.getDeclaringClass();
     return resolveType(returnType, srcType, declaringClass);
   }
@@ -90,11 +92,12 @@ public class TypeParameterResolver {
   }
 
   private static Type resolveType(Type type, Type srcType, Class<?> declaringClass) {
-    if (type instanceof TypeVariable) {
+
+    if (type instanceof TypeVariable) { //如果是类型变量，如Map<K,V>中的K,V,就是类型变量。或者单独的T(List<T>)
       return resolveTypeVar((TypeVariable<?>) type, srcType, declaringClass);
-    } else if (type instanceof ParameterizedType) {
+    } else if (type instanceof ParameterizedType) { //参数化类型，如Collection<String>
       return resolveParameterizedType((ParameterizedType) type, srcType, declaringClass);
-    } else if (type instanceof GenericArrayType) {
+    } else if (type instanceof GenericArrayType) { //包含TypeVariable and ParameterizedType 的列表
       return resolveGenericArrayType((GenericArrayType) type, srcType, declaringClass);
     } else {
       return type;
