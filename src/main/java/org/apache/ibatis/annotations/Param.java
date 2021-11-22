@@ -36,14 +36,23 @@ import java.lang.annotation.Target;
  *
  * @author Clinton Begin
  */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
+@Documented //该注解会保留在Api文档中
+@Retention(RetentionPolicy.RUNTIME) //注解会保留到运行阶段
+@Target(ElementType.PARAMETER) //可以用在参数上
 public @interface Param {
   /**
+   *
+   * 如果一个注解只有一个名为Value的属性，则在使用过程中为该属性赋值时，可以省略属性名
    * Returns the parameter name.
    *
    * @return the parameter name
    */
   String value();
+
+
+
+
+  //@Target （ANNOTATION_TYPE 注解, CONSTRUCTOR 构造函数, FIELD 字段/属性, LOCAL_VARIABLE 本地变量, METHOD 方法, PACKAGE 包, PARAMETER 参数, TYPE 类/接口/注解/枚举, TYPE_PARAMETER）
+  //@Retention SOURCE(保留到源代码阶段，编译的时候会被擦除)，CLASS（保留到类文件阶段，这是默认值的生命周期，JVM运行时会被擦除）RUNTIME （保留到JVM运行阶段）
+  //@Inherited 可以被继承
 }
