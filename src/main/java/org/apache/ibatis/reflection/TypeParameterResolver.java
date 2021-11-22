@@ -95,7 +95,7 @@ public class TypeParameterResolver {
 
     if (type instanceof TypeVariable) { //如果是类型变量，如Map<K,V>中的K,V,就是类型变量。或者单独的T(List<T>)
       return resolveTypeVar((TypeVariable<?>) type, srcType, declaringClass);
-    } else if (type instanceof ParameterizedType) { //参数化类型，如Collection<String>
+    } else if (type instanceof ParameterizedType) { //参数化类型，如Collection<String> Map<String,String>
       return resolveParameterizedType((ParameterizedType) type, srcType, declaringClass);
     } else if (type instanceof GenericArrayType) { //包含TypeVariable and ParameterizedType 的列表
       return resolveGenericArrayType((GenericArrayType) type, srcType, declaringClass);
@@ -122,7 +122,9 @@ public class TypeParameterResolver {
   }
 
   private static ParameterizedType resolveParameterizedType(ParameterizedType parameterizedType, Type srcType, Class<?> declaringClass) {
+    //本身的类型，List<T> 就是List,Map<K,V> 就是Map
     Class<?> rawType = (Class<?>) parameterizedType.getRawType();
+    //获取类型参数，如List<T> 则获取的是[T] Map<K,V> 就是[K,V]
     Type[] typeArgs = parameterizedType.getActualTypeArguments();
     Type[] args = new Type[typeArgs.length];
     for (int i = 0; i < typeArgs.length; i++) {
