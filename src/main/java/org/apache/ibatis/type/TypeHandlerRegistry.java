@@ -49,16 +49,19 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.Configuration;
 
 /**
+ * 字段与字段类型处理器的映射注册类
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */
 public final class TypeHandlerRegistry {
-
+  //jdbc字段类型 与类型处理器的映射
   private final Map<JdbcType, TypeHandler<?>>  jdbcTypeHandlerMap = new EnumMap<>(JdbcType.class);
+  //key=java类型，value= jdbc字段类型与类型处理器的映射
   private final Map<Type, Map<JdbcType, TypeHandler<?>>> typeHandlerMap = new ConcurrentHashMap<>();
   private final TypeHandler<Object> unknownTypeHandler;
+  //key=TypeHandler.class,value = TypeHandler
   private final Map<Class<?>, TypeHandler<?>> allTypeHandlersMap = new HashMap<>();
-
+  //空的map,代表该java类型没有对应的 jdbc字段类型与类型处理器
   private static final Map<JdbcType, TypeHandler<?>> NULL_TYPE_HANDLER_MAP = Collections.emptyMap();
 
   private Class<? extends TypeHandler> defaultEnumTypeHandler = EnumTypeHandler.class;
@@ -70,6 +73,13 @@ public final class TypeHandlerRegistry {
     this(new Configuration());
   }
 
+
+  public static void main(String[] args) {
+    TypeHandlerRegistry registry = new TypeHandlerRegistry();
+    TypeHandler typeHandler = registry.getTypeHandler(String.class,JdbcType.VARCHAR);
+
+    System.out.println();
+  }
   /**
    * The constructor that pass the MyBatis configuration.
    *
@@ -483,5 +493,4 @@ public final class TypeHandlerRegistry {
   public Collection<TypeHandler<?>> getTypeHandlers() {
     return Collections.unmodifiableCollection(allTypeHandlersMap.values());
   }
-
 }

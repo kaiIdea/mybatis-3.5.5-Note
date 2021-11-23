@@ -63,4 +63,7 @@ public abstract class TypeReference<T> {
     return rawType.toString();
   }
 
+  public static void main(String[] args) {
+     new IntegerTypeHandler().getSuperclassTypeParameter(IntegerTypeHandler.class);
+  }
 }
