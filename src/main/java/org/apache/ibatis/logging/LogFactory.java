@@ -18,6 +18,8 @@ package org.apache.ibatis.logging;
 import java.lang.reflect.Constructor;
 
 /**
+ *
+ * 初始化日志框架，日志打印类
  * @author Clinton Begin
  * @author Eduardo Macarron
  */
@@ -31,6 +33,7 @@ public final class LogFactory {
   private static Constructor<? extends Log> logConstructor;
 
   static {
+    //串行，执行setImplementation方法
     tryImplementation(LogFactory::useSlf4jLogging);
     tryImplementation(LogFactory::useCommonsLogging);
     tryImplementation(LogFactory::useLog4J2Logging);
@@ -47,6 +50,11 @@ public final class LogFactory {
     return getLog(clazz.getName());
   }
 
+  /**
+   * 传入logger名称，生成一个日志打印服务
+   * @param logger
+   * @return
+   */
   public static Log getLog(String logger) {
     try {
       return logConstructor.newInstance(logger);
@@ -99,11 +107,14 @@ public final class LogFactory {
 
   private static void setImplementation(Class<? extends Log> implClass) {
     try {
+      //获取日志实现类的，构造函数
       Constructor<? extends Log> candidate = implClass.getConstructor(String.class);
+      //执行构造方法，生成日志实现类的实例，如果这次生成是成功的，那以后也是成功的。
       Log log = candidate.newInstance(LogFactory.class.getName());
       if (log.isDebugEnabled()) {
         log.debug("Logging initialized using '" + implClass + "' adapter.");
       }
+      //获取构造类
       logConstructor = candidate;
     } catch (Throwable t) {
       throw new LogException("Error setting Log implementation.  Cause: " + t, t);
